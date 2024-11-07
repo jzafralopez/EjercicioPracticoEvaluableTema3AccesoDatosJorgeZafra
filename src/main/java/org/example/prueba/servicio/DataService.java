@@ -9,7 +9,9 @@ import org.hibernate.SessionFactory;
 import java.math.BigDecimal;
 import java.util.List;
 
-
+/**
+ * Servicio encargado de realizar operaciones de persistencia relacionadas con las películas y opiniones.
+ */
 public class DataService {
     private SessionFactory sessionFactory;
 
@@ -17,8 +19,10 @@ public class DataService {
         this.sessionFactory = sessionFactory;
     }
 
-
-    /*** Este metodo es el de la historia de usuario 1 ***/
+    /**
+     * Guarda una nueva película en la base de datos. Si la película ya existe, la actualiza.
+     * Utiliza la operación `merge` para sincronizar la entidad con la base de datos.
+     */
     public static void guardarPelicula(Pelicula nuevaPelicula) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             session.beginTransaction();
@@ -29,10 +33,13 @@ public class DataService {
         }
     }
 
-    public List<Opinion> obtenerOpinionesPorUsuario(String usuarioEmail) {
+    /**
+     * Obtiene todas las opiniones asociadas a un usuario específico por su correo electrónico.
+     */
+    public static List<Opinion> obtenerOpinionesPorUsuario(String usuarioEmail) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             List<Opinion> opiniones = session.createQuery(
-                            "from Opinion o where o.usuario = '" + usuarioEmail + "'", Opinion.class).list();
+                    "from Opinion o where o.usuario = '" + usuarioEmail + "'", Opinion.class).list();
             return opiniones;
         } catch (Exception e) {
             e.printStackTrace();
@@ -40,7 +47,9 @@ public class DataService {
         }
     }
 
-
+    /**
+     * Añade una nueva opinión a una película existente en la base de datos.
+     */
     public static void meterOpinion(Long idPelicula, Opinion opinion) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             session.beginTransaction();
@@ -53,8 +62,9 @@ public class DataService {
         }
     }
 
-
-    /*** Este metodo es el de la historia de usuario 4 ***/
+    /**
+     * Busca las películas que tienen opiniones con una puntuación igual o inferior a un valor dado.
+     */
     public static List<Pelicula> buscarPorBajaNota(BigDecimal puntuacionMaxima) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             return session.createQuery(

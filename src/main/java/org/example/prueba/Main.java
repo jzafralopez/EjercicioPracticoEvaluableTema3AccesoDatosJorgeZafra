@@ -3,7 +3,6 @@ package org.example.prueba;
 import org.example.prueba.model.Opinion;
 import org.example.prueba.model.Pelicula;
 import org.example.prueba.servicio.DataService;
-
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -16,7 +15,7 @@ public class Main {
         Pelicula peli = new Pelicula();
         peli.setTitulo("El señor de los anillos");
 
-        DataService.guardarPelicula(peli);
+       // DataService.guardarPelicula(peli);
 
         System.out.println(peli);
 
@@ -29,12 +28,16 @@ public class Main {
         DataService.meterOpinion(1L, opinion);
 
         /*** Comprobacion de historia del usuario 3 ***/
+        String usuarioEmail = "pepito@cesur.com";
+        List<Opinion> opinionesUsuario = DataService.obtenerOpinionesPorUsuario(usuarioEmail);
+        System.out.println("\nOpiniones del usuario " + usuarioEmail + ":");
+        for (Opinion op : opinionesUsuario) {
+            System.out.println(op);
+        }
 
-
-                /*** Comprobación de historia del usuario 4 ***/
+        /*** Comprobación de historia del usuario 4 ***/
         System.out.println("\nPeliculas con puntuación menor o igual a 3.0 (NO hay):");
         BigDecimal puntuacionMaxima = new BigDecimal("3.0");
-        System.out.println("\nPeliculas con puntuación menor o igual a 3.0 (NO hay):");
         List<Pelicula> peliculasBajaNota = DataService.buscarPorBajaNota(puntuacionMaxima);
 
         for (Pelicula pelicula : peliculasBajaNota) {
